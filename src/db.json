@@ -1,0 +1,26 @@
+{
+  "staffs": [
+    {
+      "id": "xg4x56wcs",
+      "username": "user2",
+      "password" : "12345",
+      "name": "Nguyễn Văn B",
+      "email": "test2@gmail.com",
+      "gender": "Nam",
+      "image": "https://firebasestorage.googleapis.com/v0/b/asm-react-e708b.appspot.com/o/images%2F1.jpg?alt=media&token=3aca45b8-70e1-4c1f-9cb8-4f5a063b74ad",
+      "department_id": "fex9lisde"
+    }
+  ],
+  "departments": [
+    {
+      "id": "fex9lisde",
+      "name": "Department 1",
+      "image": "https://firebasestorage.googleapis.com/v0/b/asm-react-e708b.appspot.com/o/images%2F1.jpg?alt=media&token=92c36188-3cff-43b7-8382-c4ccd25cff8d"
+    },
+    {
+      "id": "v55ba4sd8",
+      "name": "Department 2",
+      "image": "https://firebasestorage.googleapis.com/v0/b/asm-react-e708b.appspot.com/o/images%2F2.jpg?alt=media&token=f3fd0bec-132b-4988-b76f-7a7f13d412a4"
+    }
+  ]
+}
