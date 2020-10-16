@@ -14,6 +14,7 @@ import EditDepartment from '../view/Admin/Department/EditDepartment';
 
 import staffApi from '../../api/staffApi'
 import groupApi from '../../api/groupApi'
+import positionApi from '../../api/positionApi'
 
 import '../../assets/admin/plugins/fontawesome-free/css/all.min.css';
 import '../../assets/admin/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css';
@@ -32,25 +33,38 @@ import {
 
 
 export default ({ children }) => {
-    // const [staffs, setstaffs] = useState([]);
+    const [users, setUsers] = useState([]);
     const [groups, setGroups] = useState([]);
+    const [position, setPosition] = useState([]);
 
-    // useEffect(() => {
-    //     const getStaffs = async () => {
-    //         try {
-    //             const { data } = await staffApi.getAll();
-    //             setstaffs(data);
-    //         } catch (error) {
-    //             console.log('failed to request API: ', error)
-    //         }
-    //     }
-    //     getStaffs()
-    // }, []);
+    useEffect(() => {
+        const getUsers = async () => {
+            try {
+                const { data } = await staffApi.getAll();
+                setUsers(data.users);
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        getUsers();
+    }, []);
+
+    useEffect(() => {
+        const getPosition = async () => {
+            try {
+                const { data } = await positionApi.getAll();
+                setPosition(data.position);
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        getPosition();
+    }, []);
 
     useEffect(() => {
         const getGroups = async () => {
             try {
-                const {data}  = await groupApi.getAll();
+                const { data } = await groupApi.getAll();
                 setGroups(data.groups);
             } catch (error) {
                 console.log(error);
@@ -59,32 +73,30 @@ export default ({ children }) => {
         getGroups()
     }, []);
 
-    // const removeStaff = (id) => {
-    //     console.log(id);
-    //     const newData = staffs.filter(staff => staff.id !== id);
-    //     //console.log(newData);
-    //     setstaffs(newData);
-    //     staffApi.remove(id);
-    // }
+    const removeStaff = (id) => {
+        console.log(id);
+        const newData = users.filter(staff => staff.id !== id);
+        setUsers(newData);
+        staffApi.remove(id);
+    }
 
-    // const onHandleAdd = (staff) => {
-    //     console.log(staff);
-    //     setstaffs([
-    //         ...staffs,
-    //         staff
-    //     ])
-    //     staffApi.create(staff);
-    //     localStorage.setItem('staffs', JSON.stringify(staffs));
-    // }
+    const onHandleAdd = (staff) => {
+        setUsers([
+            ...users,
+            staff
+        ])
+        staffApi.create(staff);
+        localStorage.setItem('staffs', JSON.stringify(users));
+    }
 
-    // const onHandleUpdate = (updateStaff) => {
-    //     const newStaffs = staffs.map(staff => (
-    //         staff.id == updateStaff.id ? updateStaff : staff
-    //     ));
-    //     console.log(updateStaff);
-    //     setstaffs(newStaffs);
-    //     staffApi.update(updateStaff.id, updateStaff)
-    // }
+    const onHandleUpdate = (updateStaff) => {
+        const newStaffs = users.map(staff => (
+            staff.id == updateStaff.id ? updateStaff : staff
+        ));
+        console.log(updateStaff);
+        setUsers(newStaffs);
+        staffApi.update(updateStaff.id, updateStaff)
+    }
 
     const onHandleAddGroup = (group) => {
         setGroups([
@@ -124,28 +136,28 @@ export default ({ children }) => {
                                 <Dashboard />
                             </Route>
 
-                            {/* <Route path="/admin/staffs">
-                                <Staff staffs={staffs} groups={groups} onRemove={removeStaff} />
-                            </Route> */}
+                            <Route path="/admin/staffs">
+                                <Staff users={users} onRemove={removeStaff} />
+                            </Route>
 
                             <Route path="/admin/departments">
                                 <Department groups={groups} onRemove={removeGroup} />
                             </Route>
 
-                            {/* <Route path="/admin/add-staff">
-                                <AddStaff groups={groups} onAdd={onHandleAdd} />
-                            </Route> */}
+                            <Route path="/admin/add-staff">
+                                <AddStaff groups={groups} position={position} onAdd={onHandleAdd} />
+                            </Route>
 
                             <Route path="/admin/add-department">
                                 <AddDepartment onAddGroup={onHandleAddGroup} />
                             </Route>
 
-                            {/* <Route path="/admin/edit-staff/:id">
-                                <EditStaff staffs={staffs} groups={groups} onUpdate={onHandleUpdate} />
-                            </Route> */}
+                            <Route path="/admin/edit-staff/:id">
+                                <EditStaff users={users} groups={groups} onUpdate={onHandleUpdate} />
+                            </Route>
 
                             <Route path="/admin/edit-department/:id">
-                                <EditDepartment groups={groups} onUpdate={onHandleUpdateGroup}/>
+                                <EditDepartment groups={groups} onUpdate={onHandleUpdateGroup} />
                             </Route>
 
                         </Switch>

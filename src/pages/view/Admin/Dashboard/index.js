@@ -1,22 +1,22 @@
 import React, { useState, useEffect } from 'react'
-// import staffApi from '../../../../api/staffApi';
+import staffApi from '../../../../api/staffApi';
 import groupApi from '../../../../api/groupApi';
 
 const Dashboard = props => {
-    // const [staffs, setstaffs] = useState([]);
-    // useEffect(() => {
-    //     const getStaffs = async () => {
-    //         try {
-    //             const { data } = await staffApi.getAll();
-    //             setstaffs(data);
-    //         } catch (error) {
+    const [users, setUsers] = useState([]);
+    useEffect(() => {
+        const getUsers = async () => {
+            try {
+                const { data } = await staffApi.getAll();
+                setUsers(data);
+            } catch (error) {
 
-    //         }
-    //     }
-    //     getStaffs()
-    // }, []);
+            }
+        }
+        getUsers()
+    }, []);
+
     const [groups, setgroups] = useState([]);
-    
     useEffect(() => {
         const getGroups = async () => {
             try {
@@ -35,7 +35,6 @@ const Dashboard = props => {
                 <div className="col-lg-3 col-6">
                     <div className="small-box bg-info">
                         <div className="inner">
-                            {/* <h3 className="h5 mb-0 font-weight-bold text-gray-800">{staffs.length}</h3> */}
                             <p>Staffs</p>
                         </div>
                         <div className="icon">
@@ -46,7 +45,6 @@ const Dashboard = props => {
                 <div className="col-lg-3 col-6">
                     <div className="small-box bg-success">
                         <div className="inner">
-                            <h3 className="h5 mb-0 font-weight-bold text-gray-800">{groups.length}</h3>
                             <p>Departments</p>
                         </div>
                         <div className="icon">

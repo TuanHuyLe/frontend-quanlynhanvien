@@ -1,40 +1,23 @@
 import React, { useState } from 'react';
 import { Link, useHistory } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import firebase from '../../../../../firebase';
 import swal from 'sweetalert';
+import staffApi from '../../../../../api/staffApi';
 
-const AddStaff = ({ departments, onAdd }) => {
+const AddStaff = ({ position, groups, onAdd }) => {
     const { register, handleSubmit, errors } = useForm();
 
     let history = useHistory();
-    console.log(departments);
     const onHandleSubmit = (data) => {
-        console.log(data.image[0]);
-        let file = data.image[0];
-
-        let storageRef = firebase.storage().ref(`images/${file.name}`);
-
-        storageRef.put(file).then(function () {
-            storageRef.getDownloadURL().then((url) => {
-                console.log(url);
-                const newData = {
-                    id: Math.random().toString(36).substr(2, 9),
-                    ...data,
-                    image: url
-                }
-                const today = new Date();
-                const date = today.getDate() + '-' + (today.getMonth() + 1) + '-' + today.getFullYear();
-                const time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-                newData.date = date + " " + time
-                // đẩy dữ liệu ra ngoài app.js thông qua props onAdd
-                onAdd(newData)
-            })
-        });
-        history.push('/admin/staffs');
-        swal("Thêm thành công!", {
-            icon: "success",
-        });
+        try {
+            staffApi.create(data);
+            history.push('/admin/staffs');
+            swal("Thêm thành công!", {
+                icon: "success",
+            });
+        } catch (error) {
+            console.log(error);
+        }
     }
 
     return (
@@ -56,14 +39,24 @@ const AddStaff = ({ departments, onAdd }) => {
                     </div>
 
                     <div className="form-group">
+                        <label htmlFor="">Password</label>
+                        <input className="form-control" type="password" placeholder="" name="password" ref={register({ required: true, minLength: 3, pattern: /^\S{1}.{0,54}$/i })} />
+                        <small className="form-text text-danger">
+                            {errors.password && errors.password.type === "required" && <span>Hãy nhập password</span>}
+                        </small>
+                    </div>
+
+                    <div className="form-group">
                         <label htmlFor="">Name</label>
-                        <input className="form-control" type="text" placeholder="" name="name" ref={register({ required: true, minLength: 6, pattern: /^\S{1}.{0,54}$/i })} />
+                        <input className="form-control" type="text" placeholder="" name="fullName" ref={register({ required: true, minLength: 6, pattern: /^\S{1}.{0,54}$/i })} />
                         <small className="form-text text-danger">
                             {errors.name && errors.name.type === "required" && <span>Hãy nhập tên</span>}
                             {errors.username && errors.username.type === "minLength" && <span>Tên phải lớn hơn hoặc bằng 6 ký tự</span>}
                             {errors.username && errors.username.type === "pattern" && <span>Có khoảng cách ở đầu hoặc tên quá dài</span>}
                         </small>
                     </div>
+
+
 
                     <div className="form-group">
                         <label htmlFor="">Email</label>
@@ -73,39 +66,43 @@ const AddStaff = ({ departments, onAdd }) => {
                         </small>
                     </div>
 
-                    <div className="form-group">
+                    {/* <div className="form-group">
                         <label htmlFor="">Gender</label>
-                        <input className="form-control" type="text" placeholder="" name="gender" ref={register({ required: true, minLength: 3, pattern: /^\S{1}.{0,54}$/i })} />
-                        <small className="form-text text-danger">
-                            {errors.gender && errors.gender.type === "required" && <span>Hãy nhập giới tính</span>}
-                        </small>
+                        <div>
+                            <input type="radio" id="male" name="gender" checked={true} value={true} />
+                            <label htmlFor="male">Male</label><br />
+                            <input type="radio" id="female" name="gender" value={false} />
+                            <label htmlFor="female">Female</label><br />
+                        </div>
+                    </div> */}
+
+
+                    <div className="form-group">
+                        <label htmlFor="">Department</label>
+                        <select className="form-control" name="gender" ref={register()}>
+                            <option value={true}>Nam</option>
+                            <option value={false}>Nu</option>
+                        </select>
                     </div>
 
                     <div className="form-group">
-                        <label htmlFor="productPrice">Image</label>
-                        <div className="input-group">
-                            <div className="custom-file">
-                                <input type="file"
-                                    className="custom-file-input"
-                                    id="inputGroupFile02"
-                                    name="image"
-                                    ref={register({ required: true })}
-                                />
-                                <label className="custom-file-label" htmlFor="inputGroupFile02" aria-describedby="imageHelp">Choose image</label>
-                                <small id="imageHelp" className="form-text text-danger">
-                                    {errors.image && errors.image.type == "required" && <span>Ảnh không được để trống</span>}
-                                </small>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="form-group">
                         <label htmlFor="">Department</label>
-                        <select className="form-control" name="department_id" ref={register()}>
-                            {departments.map(({ id, name }, index) => (
-                                <option id={'row-' + id} key={index} value={id}>{name}</option>
+                        <select className="form-control" name="groupName" ref={register()}>
+                            {groups.map(({ id, name }, index) => (
+                                <option id={'row-' + id} key={index} value={name}>{name}</option>
                             ))}
                         </select>
                     </div>
+
+                    <div className="form-group">
+                        <label htmlFor="">Position</label>
+                        <select className="form-control" name="positionName" ref={register()}>
+                            {position.map(({ id, name }, index) => (
+                                <option id={'row-' + id} key={index} value={name}>{name}</option>
+                            ))}
+                        </select>
+                    </div>
+
                     <div className="mt-5">
                         <button type="submit" className="btn btn-primary mr-2">Add</button>
                         <Link to="/admin/staffs">

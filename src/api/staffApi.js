@@ -1,31 +1,23 @@
 import URL from "./axiosHttp";
 
-const getAll = () => {
-    return URL.get("/staffs");
+const getAll = async () => {
+    return URL.get("/api/enao/user");
 };
 
 const get = id => {
-    return URL.get(`/staffs/${id}`);
-};
-
-const getlimit8 = () => {
-    return URL.get(`/staffs?_start=0&_limit=8&_sort=date&_order=desc`);
-};
-
-const getdepartment = id => {
-    return URL.get(`/staffs?department_id=${id}`);
+    return URL.get(`/api/enao/user/${id}`);
 };
 
 const create = data => {
-    return URL.post("/staffs", data);
+    return URL.post("/api/enao/user", data);
 };
 
-const update = (id, data) => {
-    return URL.put(`/staffs/${id}`, data);
+const update = (data) => {
+    return URL.put(`/api/enao/user`, data);
 };
 
 const remove = id => {
-    return URL.delete(`/staffs/${id}`);
+    return URL.delete(`/api/enao/user/${id}`);
 };
 
 export default {
@@ -33,7 +25,5 @@ export default {
     get,
     create,
     update,
-    remove,
-    getdepartment,
-    getlimit8
+    remove
 };

@@ -8,33 +8,11 @@ const AddDepartment = ({ onAddDepartment }) => {
     const { register, handleSubmit, errors } = useForm();
     let history = useHistory();
 
-    // const onHandleSubmit = (data) => {
-    //     console.log(data.image[0]);
-    //     let file = data.image[0];
-    //     let storageRef = firebase.storage().ref(`images/${file.name}`);
-    //     storageRef.put(file).then(function () {
-    //         storageRef.getDownloadURL().then((url) => {
-    //             console.log(url);
-    //             const newData = {
-    //                 id: Math.random().toString(36).substr(2, 9),
-    //                 ...data,
-    //                 image: url
-    //             }
-    //             console.log(newData);
-    //             onAddDepartment(newData)
-    //         })
-    //     });
-    //     history.push('/api/enao/groups');
-    //     swal("Thêm danh mục thành công!", {
-    //         icon: "success",
-    //     });
-    // }
-
     const onHandleSubmit = (data) => {
         try {
             groupApi.create(data);
             history.push('/admin/departments');
-            swal("Thêm danh mục thành công!", {
+            swal("Thêm thành công!", {
                 icon: "success",
             });
         } catch (error) {

@@ -40,14 +40,6 @@ const Department = ({ groups, onRemove }) => {
                                 <th scope="col">Name</th>
                                 <th scope="col">Image</th>
                                 <th scope="col">Option</th>
-                                {/* <th scope="col">Description</th>
-                                <th scope="col">Created Date</th>
-                                <th scope="col">Updated Date</th>
-                                <th scope="col">Created By</th>
-                                <th scope="col">Updated By</th>
-                                <th scope="col">Updated Date</th>
-                                <th scope="col">Modified By</th>
-                                <td scope="col">Option</td> */}
                             </tr>
                         </thead>
                         <tbody>
@@ -56,13 +48,6 @@ const Department = ({ groups, onRemove }) => {
                                     <th scope="row">{index + 1}</th>
                                     <th>{name}</th>
                                     <th><img src={description} alt="" width="150" /></th>
-                                    {/* <th></th>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th> */}
                                     <td>
                                         <Link to={`/admin/edit-department/${id}`} className="btn btn-success">Edit</Link> &nbsp;
                                         <button onClick={() => removeElement(id)} type=" button" className="btn btn-danger">Delete</button>

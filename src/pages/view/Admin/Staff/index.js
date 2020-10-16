@@ -2,7 +2,7 @@ import React from 'react'
 import { Link } from "react-router-dom";
 import swal from 'sweetalert';
 
-const Staff = ({ staffs, departments, onRemove }) => {
+const Staff = ({ users, onRemove }) => {
     function removeElement(id) {
         swal({
             title: "Chắc chắn xóa?",
@@ -37,38 +37,26 @@ const Staff = ({ staffs, departments, onRemove }) => {
                     <table className="table table-bordered text-center" id="dataTable" width="100%" cellSpacing={0}>
                         <thead>
                             <tr>
-                                <th scope="col">ID</th>
-                                <th scope="col">Department</th>
+                                <th scope="col">Id</th>
                                 <th scope="col">Username</th>
-                                <th scope="col">Name</th>
-                                <th scope="col">Image</th>
+                                <th scope="col">Full name</th>
                                 <th scope="col">Gender</th>
                                 <th scope="col">Email</th>
-                                {/* <th scope="col">Created Date</th>
-                                <th scope="col">Updated Date</th>
-                                <th scope="col">Created By</th>
-                                <th scope="col">Updated By</th>
-                                <th scope="col">Updated Date</th>
-                                <th scope="col">Modified By</th> */}
+                                <th scope="col">Department</th>
+                                <th scope="col">Position</th>
                                 <th scope="col">Option</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {staffs.map(({ id, department_id, username, image, name, gender, email }, index) => (
+                            {users.map(({ id, username, fullName, gender, email, groupName, positionName }, index) => (
                                 <tr id={'row-' + id} key={index}>
                                     <th scope="row">{index + 1}</th>
-                                    <th>{departments && departments.map(department => department.id == department_id ? department.name : console.log(department.id))}</th>
                                     <th>{username}</th>
-                                    <th>{name}</th>
-                                    <th><img src={image} alt="" width="150" /></th>
-                                    <th>{gender}</th>
+                                    <th>{fullName}</th>
+                                    <th>{gender ? "Nam" : "Nữ"}</th>
                                     <th>{email}</th>
-                                    {/* <th></th>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th> */}
+                                    <th>{groupName}</th>
+                                    <th>{positionName}</th>
                                     <td>
                                         <Link to={`/admin/edit-staff/${id}`} className="btn btn-success">Edit</Link> &nbsp;
                                         <button onClick={() => removeElement(id)} type=" button" className="btn btn-danger">Delete</button>
